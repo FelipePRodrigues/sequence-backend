@@ -43,17 +43,19 @@ class SequenceService():
                     if letter == current_letter:
                         current_sequence_count += 1
                     else:
-                        if not current_sequence_count >= 4:
-                            current_letter = letter
-                            current_sequence_count = 1
-                            continue
+                        current_letter = letter
+                        current_sequence_count = 1
 
-                        valid_sequences += math.ceil(
-                            current_sequence_count / 4)
-                        if valid_sequences >= 2:
-                            sequence.is_valid = True
-                            sequence.save()
-                            return True
+                        if current_sequence_count >= 4:
+                            valid_sequences += math.ceil(
+                                current_sequence_count / 4)
+
+                            if valid_sequences >= 2:
+                                sequence.is_valid = True
+                                sequence.save()
+                                return True
+                        else:
+                            continue
 
                     if current_sequence_count >= 4:
                         valid_sequences += math.ceil(
@@ -68,13 +70,18 @@ class SequenceService():
         return False
 
     def get_stats(self):
+        stats = {}
         sequences = Sequence.objects.all()
         valid = sequences.filter(is_valid=True).count()
         invalid = sequences.filter(is_valid=False).count()
 
-        stats = {}
-        stats["count_valid"] = valid
-        stats["count_invalid"] = invalid
-        stats["ratio"] = round(valid / (valid + invalid), 2)
+        if not sequences:
+            stats["count_valid"] = 0
+            stats["count_invalid"] = 0
+            stats["ratio"] = 0
+        else:
+            stats["count_valid"] = valid
+            stats["count_invalid"] = invalid
+            stats["ratio"] = round(valid / (valid + invalid), 2)
 
         return stats
