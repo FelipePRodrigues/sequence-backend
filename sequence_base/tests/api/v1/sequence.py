@@ -22,6 +22,14 @@ class SequenceTest(APITestCase, URLPatternsTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(content[0], EXPECTED_RESPONSE)
 
+    def test_invalid_parameter(self):
+        EXPECTED_RESPONSE = "This field is required."
+        response = self.client.post(
+            reverse("sequence_base:sequence"), data={"invalid": []}, format="json")
+        content = json.loads(response.content.decode("utf-8")).get("letters")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(content[0], EXPECTED_RESPONSE)
+
     def test_empty_sequence(self):
         EXPECTED_RESPONSE = "This field must not be an empty array."
         response = self.client.post(
