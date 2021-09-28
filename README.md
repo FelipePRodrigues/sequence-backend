@@ -1,6 +1,20 @@
 # Sequence - Backend
 ##### *version 1.0*
 
+## Description
+This project provides a API to validade a sequence of letters. A sequence is considered valid if:
+* Represents a square matrix, with at least 4 rows and columns.
+* Contains only valid letters, which are B, U, D and H.
+* Contains at least 2 sequences of 4 identical letters in any direction (horizontal, vertical and diagonal).
+
+Examples:
+| Sequence | Is valid? | Explanation |
+|:--------:|:---------:|:-----------:|
+| ["BBBB"]<br>["DDDD"]<br>["UUUU"]<br>["HHHH"] | YES | 4 valid sequences found<br>[A0-A3] -> "BBBB"<br>[B0-B3] -> "DDDD"<br>[C0-C3] -> "UUUU"<br>[D0-D3] -> "HHHH"<br> |
+| ["BBBBB"]<br>["DUDUD"]<br>["UHUHU"]<br>["HBHBH"] | YES | 2 valid sequences found<br>[A0-A3] -> "BBBB"<br>[A1-A4] -> "BBBB"|
+| ["BDDB"]<br>["DBBD"]<br>["DBBD"]<br>["BDDB"] | YES | 2 valid sequences found<br>[A0-D3] -> "BBBB"<br>[A3-D0] -> "BBBB"|
+
+
 ## Requirements
 * Python 3.6.9
 * Virtual Environments
@@ -64,6 +78,7 @@ Execute the system:
 ```shell
 $ python3 manage.py runserver 8000
 ```
+Then you can access the api through [this link](http://localhost:8050/api/v1/).
 
 ## How it Works
 The system provides two endpoints:
@@ -80,3 +95,10 @@ Some inputs may cause a Bad Request response, below are some examples of invalid
 |["BBUU",<br>"AEHO",<br>"DHDH",<br>"BBUU"] | This field contains invalid letters. | 400 |
 |["DUH",<br>"BHD",<br>"DDB"] | This field must represent a square matrix, with at least 4 rows and columns. | 400 |
 |["BBUU",<br>"HHDD",<br>"BBUU"] | This field must represent a square matrix, with at least 4 rows and columns. | 400 |
+
+## How to access the Django Admin interface
+First, you need to create a django superuser:
+```shell
+$ python3 manage.py createsuperuser # choose your credencials
+```
+Then you can access the admin interface through [this link](http://localhost:8050/admin).
